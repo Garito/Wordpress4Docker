@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    volumes:
+      - ./conf/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./site:/var/www/html
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_PASSWORD: thePassword!*!
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links: 
+      - mysql:db
+    ports:
+      - 8081:80
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: thePassword!*!
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: thePassword!*!
